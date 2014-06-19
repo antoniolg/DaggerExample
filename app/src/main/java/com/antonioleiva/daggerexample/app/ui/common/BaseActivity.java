@@ -18,33 +18,31 @@
  *
  */
 
-apply plugin: 'android'
+package com.antonioleiva.daggerexample.app.ui.common;
 
-android {
-    compileSdkVersion 19
-    buildToolsVersion "19.1.0"
+import android.app.Activity;
+import android.os.Bundle;
 
-    defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 19
-        versionCode 1
-        versionName "1.0"
+import com.antonioleiva.daggerexample.app.App;
+
+import java.util.List;
+
+import dagger.ObjectGraph;
+
+public abstract class BaseActivity extends Activity {
+
+    private ObjectGraph activityGraph;
+
+    @Override protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activityGraph = ((App) getApplication()).createScopedGraph(getModules().toArray());
+        activityGraph.inject(this);
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        activityGraph = null;
     }
-    buildTypes {
-        release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-        }
-    }
-}
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.squareup.dagger:dagger:1.2.+'
-    provided 'com.squareup.dagger:dagger-compiler:1.2.+'
+    protected abstract List<Object> getModules();
 }

@@ -18,34 +18,34 @@
  *
  */
 
-package com.antonioleiva.daggerexample.app;
+package com.antonioleiva.daggerexample.app.ui.login;
 
-import android.app.Application;
+import com.antonioleiva.daggerexample.app.AppModule;
+import com.antonioleiva.daggerexample.app.interactors.LoginInteractor;
 
-import com.antonioleiva.daggerexample.app.domain.DomainModule;
-import com.antonioleiva.daggerexample.app.interactors.InteractorsModule;
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 
 @Module(
-        injects = {
-                App.class
-        },
-        includes = {
-                DomainModule.class,
-                InteractorsModule.class
-        }
+        injects = LoginActivity.class,
+        addsTo = AppModule.class
 )
-public class AppModule {
+public class LoginModule {
 
-    private App app;
+    private LoginView view;
 
-    public AppModule(App app) {
-        this.app = app;
+    public LoginModule(LoginView view) {
+        this.view = view;
     }
 
-    @Provides public Application provideApplication() {
-        return app;
+    @Provides @Singleton public LoginView provideView() {
+        return view;
+    }
+
+    @Provides @Singleton
+    public LoginPresenter providePresenter(LoginView loginView, LoginInteractor loginInteractor) {
+        return new LoginPresenterImpl(loginView, loginInteractor);
     }
 }

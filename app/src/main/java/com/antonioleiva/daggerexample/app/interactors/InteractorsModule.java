@@ -18,33 +18,21 @@
  *
  */
 
-apply plugin: 'android'
+package com.antonioleiva.daggerexample.app.interactors;
 
-android {
-    compileSdkVersion 19
-    buildToolsVersion "19.1.0"
+import dagger.Module;
+import dagger.Provides;
 
-    defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 19
-        versionCode 1
-        versionName "1.0"
+@Module(
+        library = true
+)
+public class InteractorsModule {
+
+    @Provides public FindItemsInteractor provideFindItemsInteractor() {
+        return new FindItemsInteractorImpl();
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+    @Provides public LoginInteractor provideLoginInteractor() {
+        return new LoginInteractorImpl();
     }
-    buildTypes {
-        release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-        }
-    }
-}
-
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.squareup.dagger:dagger:1.2.+'
-    provided 'com.squareup.dagger:dagger-compiler:1.2.+'
 }

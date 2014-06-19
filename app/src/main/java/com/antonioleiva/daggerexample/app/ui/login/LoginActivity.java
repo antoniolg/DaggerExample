@@ -1,24 +1,25 @@
 /*
  *
- *  * Copyright (C) 2014 Antonio Leiva Gordillo.
  *  *
- *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  * you may not use this file except in compliance with the License.
- *  * You may obtain a copy of the License at
+ *  *  * Copyright (C) 2014 Antonio Leiva Gordillo.
+ *  *  *
+ *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  * you may not use this file except in compliance with the License.
+ *  *  * You may obtain a copy of the License at
+ *  *  *
+ *  *  *      http://www.apache.org/licenses/LICENSE-2.0
+ *  *  *
+ *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  * See the License for the specific language governing permissions and
+ *  *  * limitations under the License.
  *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
  *
  */
 
 package com.antonioleiva.daggerexample.app.ui.login;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -26,14 +27,21 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.antonioleiva.daggerexample.app.R;
+import com.antonioleiva.daggerexample.app.ui.common.BaseActivity;
 import com.antonioleiva.daggerexample.app.ui.main.MainActivity;
 
-public class LoginActivity extends Activity implements LoginView, View.OnClickListener {
+import java.util.Arrays;
+import java.util.List;
+
+import javax.inject.Inject;
+
+public class LoginActivity extends BaseActivity implements LoginView, View.OnClickListener {
+
+    @Inject LoginPresenter presenter;
 
     private ProgressBar progressBar;
     private EditText username;
     private EditText password;
-    private LoginPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +52,10 @@ public class LoginActivity extends Activity implements LoginView, View.OnClickLi
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
         findViewById(R.id.button).setOnClickListener(this);
+    }
 
-        presenter = new LoginPresenterImpl(this);
+    @Override protected List<Object> getModules() {
+        return Arrays.<Object>asList(new LoginModule(this));
     }
 
     @Override public void showProgress() {

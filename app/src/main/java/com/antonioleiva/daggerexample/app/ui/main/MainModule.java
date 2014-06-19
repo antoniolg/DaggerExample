@@ -20,9 +20,32 @@
 
 package com.antonioleiva.daggerexample.app.ui.main;
 
-public interface MainPresenter {
+import com.antonioleiva.daggerexample.app.AppModule;
+import com.antonioleiva.daggerexample.app.interactors.FindItemsInteractor;
 
-    public void onResume();
+import javax.inject.Singleton;
 
-    public void onItemClicked(int position);
+import dagger.Module;
+import dagger.Provides;
+
+@Module(
+        injects = MainActivity.class,
+        addsTo = AppModule.class
+)
+public class MainModule {
+
+    private MainView view;
+
+    public MainModule(MainView view) {
+        this.view = view;
+    }
+
+    @Provides @Singleton public MainView provideView() {
+        return view;
+    }
+
+    @Provides @Singleton
+    public MainPresenter providePresenter(MainView loginView, FindItemsInteractor findItemsInteractor) {
+        return new MainPresenterImpl(view, findItemsInteractor);
+    }
 }

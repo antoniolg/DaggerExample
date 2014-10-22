@@ -45,7 +45,7 @@ public class MainModule {
     }
 
     @Provides @Singleton
-    public MainPresenter providePresenter(MainView loginView, FindItemsInteractor findItemsInteractor) {
-        return new MainPresenterImpl(view, findItemsInteractor);
+    public MainPresenter providePresenter(MainView mainView, FindItemsInteractor findItemsInteractor) {
+        return new MainPresenterImpl(mainView, findItemsInteractor);
     }
 }
